@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class Maid {
+    public static final String WEB_SOURCE = "/web";
     private static final String CONFIG_FILE = "maid.properties";
 
     private static Properties conf;
