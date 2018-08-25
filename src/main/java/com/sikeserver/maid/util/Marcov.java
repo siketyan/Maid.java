@@ -14,6 +14,7 @@ public class Marcov {
         for (var i = 0; i < words.size() - 2; i++) {
             blocks.add(
                 new Block(
+                    UUIDHelper.generate(),
                     words.get(i),
                     words.get(i + 1),
                     words.get(i + 2)

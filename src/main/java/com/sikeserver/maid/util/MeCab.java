@@ -21,6 +21,8 @@ public class MeCab {
                 var line = reader.readLine();
                 if (line == null) {
                     break;
+                } else if (line.equals("EOS")) {
+                    continue;
                 }
 
                 result.add(line);

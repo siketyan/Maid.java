@@ -1,5 +1,6 @@
 package com.sikeserver.maid.server;
 
+import com.sikeserver.maid.util.Learner;
 import com.sikeserver.maid.util.Marcov;
 import com.sikeserver.maid.util.MeCab;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class SocketServlet extends WebSocketServlet {
@@ -17,11 +19,11 @@ public class SocketServlet extends WebSocketServlet {
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("text/html");
+        response.setContentType("text/plain; charset=utf-8");
 
         try (var writer = response.getWriter()) {
-            writer.write("Welcome home, master!");
-        } catch (IOException e) {
+            writer.write(Learner.generateSentence());
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
@@ -56,6 +58,8 @@ public class SocketServlet extends WebSocketServlet {
             }
 
             var blocks = Marcov.generateBlocks(words);
+            Learner.addBlocks(blocks);
+
             for (var block : blocks) {
                 writer.write(
                     block.getFirst() + ", "
@@ -63,7 +67,7 @@ public class SocketServlet extends WebSocketServlet {
                         + block.getThird() + "\n"
                 );
             }
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
