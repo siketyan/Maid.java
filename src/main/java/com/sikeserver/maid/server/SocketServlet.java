@@ -2,6 +2,7 @@ package com.sikeserver.maid.server;
 
 import com.sikeserver.maid.Maid;
 import com.sikeserver.maid.util.Learner;
+import com.sikeserver.maid.util.Logger;
 import com.sikeserver.maid.util.Marcov;
 import com.sikeserver.maid.util.MeCab;
 import org.eclipse.jetty.websocket.servlet.WebSocketServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -39,7 +41,10 @@ public class SocketServlet extends WebSocketServlet {
         if (path.equalsIgnoreCase("/api")) {
             try (var writer = response.getWriter()) {
                 response.setContentType("text/plain; charset=utf-8");
-                writer.write(Learner.generateSentence());
+
+                var sentence = Learner.generateSentence();
+                writer.write(URLEncoder.encode(sentence, StandardCharsets.UTF_8));
+                Logger.info(request.getRemoteAddr() + " generated: " + sentence);
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
