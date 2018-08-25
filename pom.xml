@@ -6,10 +6,10 @@
     <groupId>com.sikeserver</groupId>
     <artifactId>maid</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <properties>
+    <!--<properties>
         <maven.compiler.source>10</maven.compiler.source>
         <maven.compiler.target>10</maven.compiler.target>
-    </properties>
+    </properties>-->
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
@@ -32,4 +32,26 @@
             <version>9.4.11.v20180605</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>10</source>
+                    <target>10</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
