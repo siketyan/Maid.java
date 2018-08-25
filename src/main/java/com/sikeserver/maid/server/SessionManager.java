@@ -1,5 +1,6 @@
 package com.sikeserver.maid.server;
 
+import com.sikeserver.maid.Maid;
 import com.sikeserver.maid.task.KeepAliveTask;
 import com.sikeserver.maid.util.Logger;
 
@@ -16,6 +17,7 @@ public class SessionManager {
     private static KeepAliveTask task = new KeepAliveTask();
 
     private boolean isTaskRunning;
+    private int keepAliveDelay = Integer.parseUnsignedInt(Maid.getConfig().getProperty("Server.KeepAlive", "60000"));
     private ScheduledFuture future;
     private List<WebSocketListener> sessions = new ArrayList<>();
 
@@ -25,9 +27,9 @@ public class SessionManager {
         if (!isTaskRunning) {
             future = scheduler.scheduleWithFixedDelay(
                 task,
-                60,
-                60,
-                TimeUnit.SECONDS
+                keepAliveDelay,
+                keepAliveDelay,
+                TimeUnit.MILLISECONDS
             );
             isTaskRunning = true;
 
