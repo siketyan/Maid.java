@@ -4,3 +4,7 @@
 
 # Maven
 target
+dependency-reduced-pom.xml
+
+# Config
+*.properties
