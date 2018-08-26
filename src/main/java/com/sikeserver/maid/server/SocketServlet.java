@@ -44,7 +44,7 @@ public class SocketServlet extends WebSocketServlet {
 
                 var sentence = Learner.generateSentence();
                 writer.write(URLEncoder.encode(sentence, StandardCharsets.UTF_8));
-                Logger.info(request.getRemoteAddr() + " generated: " + sentence);
+                Logger.info(getRemoteAddr(request) + " generated: " + sentence);
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -128,5 +128,14 @@ public class SocketServlet extends WebSocketServlet {
 
         String ext = path.substring(index + 1);
         return mime.get(ext);
+    }
+
+    private String getRemoteAddr(HttpServletRequest request) {
+        var forwardedFor = request.getHeader("X-Forwarded-For");
+        if (forwardedFor == null) {
+            return request.getRemoteAddr();
+        }
+
+        return forwardedFor;
     }
 }
