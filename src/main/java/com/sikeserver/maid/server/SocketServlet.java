@@ -131,11 +131,16 @@ public class SocketServlet extends WebSocketServlet {
     }
 
     private String getRemoteAddr(HttpServletRequest request) {
-        var forwardedFor = request.getHeader("X-Forwarded-For");
-        if (forwardedFor == null) {
-            return request.getRemoteAddr();
+        var cfConnecting = request.getHeader("CF-Connecting-IP");
+        if (cfConnecting == null) {
+            var forwardedFor = request.getHeader("X-Forwarded-For");
+            if (forwardedFor == null) {
+                return request.getRemoteAddr();
+            }
+
+            return forwardedFor;
         }
 
-        return forwardedFor;
+        return cfConnecting;
     }
 }
